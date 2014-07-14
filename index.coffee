@@ -26,21 +26,22 @@ app.post('/', (req, res) ->
     randomIndex = Math.floor(Math.random() * (gifs.length - 1)) + 0
     gif = gifs[randomIndex]
 
-    payload = "<#{gif.url}>"
-    slack_options = {
-      url: ''
-      method: 'POST'
-      json: {
-        channel: "##{params.channel_name}",
-        "text":payload,
-        "username":"Gifmatic",
-        "icon_emoji":":frowning:"
+    if gif?
+      payload = "<#{gif.url}>"
+      slack_options = {
+        url: ''
+        method: 'POST'
+        json: {
+          channel: "##{params.channel_name}",
+          "text":payload,
+          "username":"Gifmatic",
+          "icon_emoji":":frowning:"
+        }
       }
-    }
 
-    request(slack_options, (err) ->
-      return res.send(500, err) if err?
-    )
+      request(slack_options, (err) ->
+        return res.send(500, err) if err?
+      )
   )
 )
 
