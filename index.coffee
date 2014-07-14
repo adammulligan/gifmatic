@@ -43,7 +43,6 @@ app.post('/', (req, res) ->
       )
   )
 )
-      console.log 'it worked'
 
 http.createServer(app).listen 4567, (err) ->
   if err?
