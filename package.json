@@ -1,0 +1,11 @@
+{
+  "name": "gifmatic",
+  "version": "0.0.1",
+  "description": "Slack gif bot",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam Mulligan (@amulligan)",
+  "license": "ISC"
+}
