@@ -1,35 +1,43 @@
 express = require('express')
 bodyParser = require('body-parser')
 request = require('request')
+http = require('http')
 
 app = express()
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded())
 
 app.post('/', (req, res) ->
-  var text = req.body.text.split('-c')
-  var gifQuery = text[0]
-  // Get gifs from giphy 
-  request('http://api.giphy.com/v1/gifs/search?q='+gifQuery+keys.gifme, function(err, response, body) {
-    if (err) res.send(err)
-    var b = JSON.parse(body), random = Math.floor(Math.random() * (b.data.length - 1)) + 0
-    var payload;
-    var url = b.data[random].url
-      , user = req.body.user_name
-      , caption = text[1]
-      , gifTitle = text[0];
-    if (caption) payload ="Title: "+ gifTitle +'\nSent By '+ user + "\n~'"+caption+"'\n<"+url+">" ;
-    else if (!caption) payload = "Title: "+ gifTitle +'\nSent By '+ user + "\n<"+url+">" ;
-    var options = {
-      url: 'Your web hook integration url token here',
-      method: "POST",
-      json: {"text":payload, "username":"the bot name", "icon_emoji":":an emoji:"}
+  params = req.body
+
+  query = params.text
+
+  url = "http://api.giphy.com/v1/gifs/search?q=#{query}&api_key=dc6zaTOxFJmzC"
+  request(url, (err, response, body) ->
+    return res.send(500) if err?
+
+    gifs = JSON.parse(body)["data"]
+
+    randomIndex = Math.floor(Math.random() * (gifs.length - 1)) + 0
+    gif = gifs[randomIndex]
+
+    payload = "<#{gif.url}>"
+    slack_options = {
+      url: 'https://wcmc.slack.com/services/hooks/incoming-webhook?token=otypML1dl4nfbJRLZf2kjBd5'
+      method: 'POST'
+      json: {"text":payload, "username":"Gifmatic", "icon_emoji":":frowning:"}
     }
-    // Send gifs to slack channel
-    request(options, function(err) {
-      if (err) res.send(err);
-    })
-    res.send('Gif sent.')
-  })
-})
+
+    request(options, (err) ->
+      res.send(500, err) if err?
+    )
+  )
+)
+
+http.createServer(app).listen 4567, (err) ->
+  if err?
+    console.log 'Could not start server:'
+    console.log err
+  else
+    console.log 'Starting server'
