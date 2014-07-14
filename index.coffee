@@ -23,8 +23,7 @@ app.post('/', (req, res) ->
 
     gifs = JSON.parse(body)["data"]
 
-    randomIndex = Math.floor(Math.random() * (gifs.length - 1)) + 0
-    gif = gifs[randomIndex]
+    gif = gifs[0]
 
     if gif?
       payload = "From: #{params.user_name}\nQuery: #{query}\n <#{gif.url}>"
