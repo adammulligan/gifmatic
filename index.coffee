@@ -27,7 +27,7 @@ app.post('/', (req, res) ->
     gif = gifs[randomIndex]
 
     if gif?
-      payload = "<#{gif.url}>"
+      payload = "From: #{params.user_name}\nQuery: #{query}\n <#{gif.url}>"
       slack_options = {
         url: ''
         method: 'POST'
@@ -44,6 +44,7 @@ app.post('/', (req, res) ->
       )
   )
 )
+      console.log 'it worked'
 
 http.createServer(app).listen 4567, (err) ->
   if err?
