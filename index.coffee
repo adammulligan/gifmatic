@@ -8,6 +8,10 @@ app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
 
+app.get('/', (req, res) ->
+  res.send('Up and running')
+)
+
 app.post('/', (req, res) ->
   params = req.body
 
@@ -24,13 +28,18 @@ app.post('/', (req, res) ->
 
     payload = "<#{gif.url}>"
     slack_options = {
-      url: 'https://wcmc.slack.com/services/hooks/incoming-webhook?token=otypML1dl4nfbJRLZf2kjBd5'
+      url: ''
       method: 'POST'
-      json: {"text":payload, "username":"Gifmatic", "icon_emoji":":frowning:"}
+      json: {
+        channel: "##{params.channel_name}",
+        "text":payload,
+        "username":"Gifmatic",
+        "icon_emoji":":frowning:"
+      }
     }
 
-    request(options, (err) ->
-      res.send(500, err) if err?
+    request(slack_options, (err) ->
+      return res.send(500, err) if err?
     )
   )
 )
