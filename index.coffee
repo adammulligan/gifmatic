@@ -16,7 +16,7 @@ app.get('/', (req, res) ->
 )
 
 post_to_slack = (params, gif) ->
-  payload = "#{query}\n <#{gif.url}>"
+  payload = "#{params.text}\n <#{gif.url}>"
 
   req_options = {
     url: "https://#{SLACK_ACCOUNT}.slack.com/services/hooks/incoming-webhook?token=#{SLACK_TOKEN}"
