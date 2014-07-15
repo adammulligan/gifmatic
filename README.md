@@ -5,7 +5,7 @@ a matching image from the Giphy API.
 
 ## Usage
 
-Drop a Slack Incoming Webhook URL in to the app, and then:
+Drop a Slack Incoming Webhook URL in [here](index.coffee#L31), and then:
 
 ```
 # starts a server on port 4567
